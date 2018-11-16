@@ -1,0 +1,14 @@
+{
+    "name": "tristan/game-watch-server",
+    "description": "Backend for the Game Watch service",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Tristan Mastrodicasa",
+            "email": "ghoststeam217@gmail.com"
+        }
+    ],
+    "require": {
+        "catfan/medoo": "^1.5"
+    }
+}

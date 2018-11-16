@@ -1,0 +1,15 @@
+# Custom Configurations
+# Following definitions set up pretty URL's
+
+Options -Indexes
+Options +FollowSymLinks
+RewriteEngine On
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+
+RewriteRule ^([a-zA-Z0-9\-]+)/$ index.php?cat=$1 [QSA]
+RewriteRule ^([a-zA-Z0-9\-]+)$ index.php?cat=$1 [QSA]
+
+RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/$ index.php?cat=$1&sub_cat=$2 [QSA]
+RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)$ index.php?cat=$1&sub_cat=$2 [QSA]

@@ -17,8 +17,6 @@ USE game_watch;
 
 DROP TABLE IF EXISTS account_info,
                      password_info,
-					 account_extra_info,
-					 account_games_info,
 					 notification_settings,
 					 user_subscriptions,
 					 events,
@@ -30,8 +28,11 @@ DROP TABLE IF EXISTS account_info,
 
 CREATE TABLE account_info (
 	uid         INT          NOT NULL AUTO_INCREMENT,
-	email       VARCHAR(100) NOT NULL,
-
+	profile_img VARCHAR(64),                          -- Will vary depending on storage algorithm and naming scheme
+	username    VARCHAR(20)  NOT NULL,
+	rating      INT          NOT NULL DEFAULT 0,      -- Keep in sync with the game ratings
+	subscribers INT          NOT NULL DEFAULT 0,      -- Keep in sync with the user_subscriptions table count
+						 
 	PRIMARY KEY (uid)
 ) ENGINE = INNODB;
 
@@ -42,34 +43,6 @@ CREATE TABLE password_info (
 
 	FOREIGN KEY (uid) REFERENCES account_info (uid) ON DELETE CASCADE,
 	PRIMARY KEY (uid)
-) ENGINE = INNODB;
-
-CREATE TABLE account_extra_info (
-	uid         INT          NOT NULL,
-	profile_img VARCHAR(64),                          -- Will vary depending on storage algorithm and naming scheme
-	username    VARCHAR(20)  NOT NULL,
-	rating      INT          NOT NULL DEFAULT 0,      -- Keep in sync with the game ratings
-	subscribers INT          NOT NULL DEFAULT 0,      -- Keep in sync with the user_subscriptions table count
-	region      ENUM("aa",                            -- Australasia
-					 "as",                            -- Asia
-					 "na",                            -- North America
-					 "eu"                             -- European Union
-				 		 )   NOT NULL DEFAULT "na",
-
-	FOREIGN KEY (uid) REFERENCES account_info (uid) ON DELETE CASCADE,
-	PRIMARY KEY (uid)
-) ENGINE = INNODB;
-
-CREATE TABLE account_games_info (
-	uid         INT          NOT NULL,
-	game        ENUM("rus",                           -- Rust
-					 "mnc",                           -- Minecraft
-					 "wrb",                           -- Mount and Blade: Warband
-					 "ar3",                           -- Arma 3
-					 "grm"                            -- Gary's Mod
-				          )  NOT NULL,
-
-	FOREIGN KEY (uid) REFERENCES account_info (uid) ON DELETE CASCADE
 ) ENGINE = INNODB;
 
 CREATE TABLE notification_settings (

@@ -36,10 +36,10 @@
     require(VENDOR_PATH . "/autoload.php");
 
     // Import Helpers //
+    require(LIBRARY_PATH . "/helpers/handler-parent.class.php");
     require(LIBRARY_PATH . "/helpers/handler.interface.php");
     require(LIBRARY_PATH . "/helpers/file-to-class.function.php");
     require(LIBRARY_PATH . "/helpers/security.class.php");
-    require(LIBRARY_PATH . "/helpers/output-object.class.php");
 
     // Use namespaces //
     use Medoo\Medoo; // Vendor
@@ -48,12 +48,26 @@
      * Establish the handler being requested
      */
 
-    if (!isset($_GET["cat"])) $request = "index";
-	else if (in_array($_GET["cat"], $CATEGORIES)) $request = $_GET["cat"];
-	else $request = "404";
+    if (!isset($_GET["cat"])) {
+        
+        // If no handlers are passed
+        //$request = "index";
+        $request = "404";
+        
+    } else if (in_array($_GET["cat"], $CATEGORIES)) {
+        
+        // if the handler is within the acceptable list (in config)
+        $request = $_GET["cat"];
+        
+    } else {
+        
+        // If the handler does not exist
+        $request = "404";
+        
+    }
 
-    // If the request exists //
-    if ($request != "404") {
+    // If the request exists, and the method is correct //
+    if ($request != "404" && $_SERVER['REQUEST_METHOD'] == "POST") {
 
         /**
          * Perform permission based actions
@@ -61,12 +75,16 @@
          */
 
         if (Security::handlerAccess($request)) {
-
+            
             /**
-             * Load the correct handler for the request
+             * Convert the PHP input (json) to an array
              */
-
-            // Check the validity of the request object //
+            $_POST = json_decode(file_get_contents("php://input"), true);
+            
+            /**
+             * Check the validity of the request object
+             */
+            
             if (Security::validateRequestData($request, $_POST)) {
 
                 /**
@@ -83,25 +101,19 @@
                 ]);
 
                 /**
-                 * Initialize output object
-                 */
-
-                $outputObj = new OutputObject();
-
-                /**
                  * Initialize handler
                  */
 
                 require(LIBRARY_PATH . "/handlers/" . $request . ".class.php");
 
                 $className = fileToClass($request);
-                $handler = new $className($_POST, $outputObj, $database);
+                $handler = new $className($_POST, $database);
 
                 /**
                  * Proccess and send the output
                  */
 
-                echo json_encode($handler->process());
+                 echo json_encode($handler->process());
 
             }
 

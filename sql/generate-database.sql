@@ -6,6 +6,8 @@
 
 -- Generate database --
 
+SELECT "Re-create the database" AS "INFO";
+
 DROP DATABASE IF EXISTS game_watch;
 CREATE DATABASE IF NOT EXISTS game_watch
 	CHARACTER SET utf8mb4
@@ -14,6 +16,8 @@ CREATE DATABASE IF NOT EXISTS game_watch
 USE game_watch;
 
 -- Clear tables --
+
+SELECT "Clearing Tables" AS "INFO";
 
 DROP TABLE IF EXISTS account_info,
                      password_info,
@@ -25,6 +29,8 @@ DROP TABLE IF EXISTS account_info,
 					 notifications_seen;
 
 -- Create tables --
+
+SELECT "Creating New Tables" AS "INFO";
 
 CREATE TABLE account_info (
 	uid         INT          NOT NULL AUTO_INCREMENT,
@@ -137,3 +143,5 @@ CREATE TABLE notifications_seen (
 --	FOREIGN KEY (nid) REFERENCES notifications (nid) ON DELETE CASCADE,
 --	FOREIGN KEY (uid) REFERENCES account_info (uid) ON DELETE CASCADE
 -- ) ENGINE = INNODB;
+
+SELECT "Done" AS "INFO";

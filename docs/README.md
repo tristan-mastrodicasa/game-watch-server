@@ -32,6 +32,7 @@ If you want to add a handler you must complete a number of steps
 * Add it to accepted categories in the config.php file
 * Add a handler with the filename "request".class.php
 * The class in the file must follow an uppercase camel case pattern (with the text of "request")
+* The class must extend the HandlerParent class
 * The class must implement the handler interface in the helper files
 * In security support file add the access level and what the request object should be
 

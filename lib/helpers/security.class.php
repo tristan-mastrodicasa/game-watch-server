@@ -11,10 +11,9 @@
 
  			switch ($handler) {
 
- 				case "signup":
+ 				case "sign-up":
  				case "login":
  					if (!isset($requestData["username"])) return false;
- 					if (!isset($requestData["email"])) return false;
  					if (!isset($requestData["password"])) return false;
  					break;
 
